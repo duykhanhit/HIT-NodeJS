@@ -1,58 +1,34 @@
 const Category = require("../models/Category");
+const asyncHandle = require("../middlewares/asyncHandle");
 
 module.exports = {
-  getAllCategory: async (req, res) => {
-    try {
-      const categories = await Category.find();
+  getAllCategory: asyncHandle(async (req, res, next) => {
+    const categories = await Category.find();
+    res.json({
+      err: 0,
+      success: true,
+      data: categories,
+    });
+  }),
 
-      res.json({
-        err: 0,
-        success: true,
-        data: categories,
-      });
-    } catch (err) {
-      res.json({
-        err: 1,
-        success: false,
-        data: err.message,
-      });
-    }
-  },
+  getCategory: asyncHandle(async (req, res) => {
+    const category = await Category.findById(req.params.id);
 
-  getCategory: async (req, res) => {
-    try {
-      const category = await Category.findById(req.params.id);
+    res.json({
+      err: 0,
+      success: true,
+      data: category,
+    });
+  }),
 
-      res.json({
-        err: 0,
-        success: true,
-        data: category,
-      });
-    } catch (err) {
-      res.json({
-        err: 1,
-        success: false,
-        data: err.message,
-      });
-    }
-  },
+  createCategory: asyncHandle(async (req, res) => {
+    const { name, description } = req.body;
+    const category = await Category.create({ name, description });
 
-  createCategory: async (req, res) => {
-    try {
-      const { name, description } = req.body;
-      const category = await Category.create({ name, description });
-
-      res.json({
-        err: 0,
-        success: true,
-        data: category,
-      });
-    } catch (err) {
-      res.json({
-        err: 1,
-        success: false,
-        data: err.message,
-      });
-    }
-  },
+    res.json({
+      err: 0,
+      success: true,
+      data: category,
+    });
+  }),
 };

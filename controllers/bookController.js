@@ -3,7 +3,9 @@ const Book = require("../models/Book");
 module.exports = {
   getAllBook: async (req, res) => {
     try {
-      const books = await Book.find({ categoryID: req.params.id });
+      const books = await Book.find({
+        categoryID: req.params.id,
+      });
 
       res.json({
         err: 0,
@@ -22,7 +24,7 @@ module.exports = {
   getBook: async (req, res) => {
     try {
       const book = await Book.findById(req.params.id);
-      console.log(book);
+
       res.json({
         err: 0,
         success: true,
